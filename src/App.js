@@ -1,10 +1,9 @@
-// src/App.js
-
 import React, { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import UserCard from "./components/UserCard";
-import { Container, Button, CircularProgress, Grid } from "@mui/material";
-import "./App.css"; // Import the CSS file for the black background
+import { Container, Grid } from "@mui/material";
+import "./App.css";
+import Loader from "./components/Loader";
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -27,6 +26,8 @@ function App() {
       });
   };
 
+  useEffect(() => {}, []);
+
   const handleSearch = (searchText) => {
     if (searchText.trim() === "") {
       setFilteredUsers([]);
@@ -46,20 +47,21 @@ function App() {
     <div>
       <Navbar onGetUsers={getUsers} onSearch={handleSearch} />
       <Container sx={{ mt: 4 }}>
-        
-        {loading ? (
-          <div className="text-center mt-4">
-            <CircularProgress />
-          </div>
-        ) : showUsers ? (
+        {showUsers ? (
           <Grid container spacing={2} mt={4}>
-            {filteredUsers.length > 0
-              ? filteredUsers.map((user) => (
-                  <UserCard key={user.id} user={user} />
-                ))
-              : users.map((user) => <UserCard key={user.id} user={user} />)}
+            {loading ? (
+              <Loader />
+            ) : filteredUsers.length > 0 ? (
+              filteredUsers.map((user) => (
+                <UserCard key={user.id} user={user} />
+              ))
+            ) : (
+              users.map((user) => <UserCard key={user.id} user={user} />)
+            )}
           </Grid>
-        ) : null}
+        ) : (
+          <Loader />
+        )}
       </Container>
     </div>
   );
