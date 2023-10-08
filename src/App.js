@@ -12,8 +12,8 @@ function App() {
   const [showUsers, setShowUsers] = useState(false);
 
   const getUsers = () => {
-    setLoading(true);
-    fetch("https://reqres.in/api/users?page=1")
+    setLoading(true); 
+    fetch(`https://reqres.in/api/users?page=1&per_page=20`)
       .then((response) => response.json())
       .then((data) => {
         setUsers(data.data);
@@ -21,10 +21,11 @@ function App() {
         setShowUsers(true);
       })
       .catch((error) => {
-        console.error("Error fetching user data:", error);
+        console.error('Error fetching user data:', error);
         setLoading(false);
       });
   };
+  
 
   useEffect(() => {}, []);
 
